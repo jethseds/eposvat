@@ -5,9 +5,12 @@ class ReceiptModel {
     this.customerName,
     this.address,
     this.referenceNumber,
+    this.serviceCharge,
     this.amount,
     this.vat,
     this.total,
+    this.cash,
+    this.change,
     this.POSoperator,
     this.dateTimeCreated,
     this.userEmail,
@@ -18,9 +21,12 @@ class ReceiptModel {
   String customerName;
   String address;
   int referenceNumber;
+  double serviceCharge;
   double amount;
   double vat;
   double total;
+  double cash;
+  double change;
   String POSoperator;
   String dateTimeCreated;
   String userEmail;

@@ -20,10 +20,10 @@ class AuthLoginSuccess extends AuthState {
 }
 
 class AuthFailedState extends AuthState {
-  final String errorMessage;
+  final String Message;
 
-  const AuthFailedState(this.errorMessage);
+  const AuthFailedState(this.Message);
 
   @override
-  List<Object> get props => [errorMessage];
+  List<Object> get props => [Message];
 }

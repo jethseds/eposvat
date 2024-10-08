@@ -48,7 +48,17 @@ class FirestoreSpecificProductLoaded extends FirestoreState {
   FirestoreSpecificProductLoaded(this.SpecificProducts);
 }
 
+class FirestoreUpdateSpecificProductLoaded extends FirestoreState {
+  final List<ProductModel> SpecificProducts;
+  FirestoreUpdateSpecificProductLoaded(this.SpecificProducts);
+}
+
 class FirestoreGetProduct extends FirestoreState {
   final ProductModel product;
   FirestoreGetProduct(this.product);
+}
+
+class FirestoreGetCount extends FirestoreState {
+  final int count;
+  FirestoreGetCount(this.count);
 }

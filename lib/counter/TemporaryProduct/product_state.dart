@@ -18,5 +18,18 @@ class ProductError extends ProductState {
 
 class ProductUpdated extends ProductState {
   final List<ProductModel> products;
-  ProductUpdated(this.products);
+  final double subTotal;
+  final double vat;
+  final double total;
+  ProductUpdated(this.products, this.subTotal, this.total, this.vat);
+}
+
+class ProductChange extends ProductState {
+  final List<ProductModel> products;
+  final double subTotal;
+  final double vat;
+  final double total;
+  final double change;
+  ProductChange(
+      this.products, this.subTotal, this.change, this.total, this.vat);
 }

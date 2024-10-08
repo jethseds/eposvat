@@ -33,9 +33,12 @@ class FirestoreService {
           data['customerName'].toString(),
           data['address'].toString(),
           int.parse(data['referenceNumber'].toString()),
+          double.parse(data['serviceCharge'].toString()),
           double.parse(data['amount'].toString()),
           double.parse(data['vat'].toString()),
           double.parse(data['total'].toString()),
+          double.parse(data['cash'].toString()),
+          double.parse(data['change'].toString()),
           data['POSoperator'].toString(),
           data['dateTimeCreated'].toString(),
           data['userEmail'].toString(),
@@ -45,6 +48,38 @@ class FirestoreService {
         );
       }).toList();
     });
+  }
+
+  Future<int> getCount() async {
+    final receipts = await receiptsData
+        .orderBy('referenceNumber', descending: true)
+        .get()
+        .then((snapshot) {
+      return snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        List<ProductModel> list = [];
+        return ReceiptModel(
+          data['customerName'].toString(),
+          data['address'].toString(),
+          int.parse(data['referenceNumber'].toString()),
+          double.parse(data['serviceCharge'].toString()),
+          double.parse(data['amount'].toString()),
+          double.parse(data['vat'].toString()),
+          double.parse(data['total'].toString()),
+          double.parse(data['cash'].toString()),
+          double.parse(data['change'].toString()),
+          data['POSoperator'].toString(),
+          data['dateTimeCreated'].toString(),
+          data['userEmail'].toString(),
+          data['paymentMethod'].toString(),
+          data['receiptCategory'].toString(),
+          list,
+        );
+      }).toList();
+    });
+    int referenceNumber =
+        DateTime.now().toLocal().year * 10000 + (receipts.length + 1);
+    return referenceNumber;
   }
 
   Future<void> addReceipt(ReceiptModel receipt) async {
@@ -59,9 +94,12 @@ class FirestoreService {
           data['customerName'].toString(),
           data['address'].toString(),
           int.parse(data['referenceNumber'].toString()),
+          double.parse(data['serviceCharge'].toString()),
           double.parse(data['amount'].toString()),
           double.parse(data['vat'].toString()),
           double.parse(data['total'].toString()),
+          double.parse(data['cash'].toString()),
+          double.parse(data['change'].toString()),
           data['POSoperator'].toString(),
           data['dateTimeCreated'].toString(),
           data['userEmail'].toString(),
@@ -76,9 +114,12 @@ class FirestoreService {
       'customerName': receipt.customerName,
       'address': receipt.address,
       'referenceNumber': referenceNumber,
+      'serviceCharge': receipt.serviceCharge,
       'amount': receipt.amount,
       'vat': receipt.vat,
       'total': receipt.total,
+      'cash': receipt.cash,
+      'change': receipt.change,
       'POSoperator': receipt.POSoperator,
       'dateTimeCreated': receipt.dateTimeCreated,
       'userEmail': receipt.userEmail,

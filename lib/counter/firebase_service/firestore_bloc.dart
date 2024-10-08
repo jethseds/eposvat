@@ -115,6 +115,23 @@ class FirestoreBloc extends Bloc<FirestoreEvent, FirestoreState> {
       }
     });
 
+    on<UpdateSpecificProducts>((event, emit) async {
+      emit(FirestoreLoading());
+      try {
+        final specificProducts =
+            await firestoreService.getSpecificProducts(event.type);
+        Iterable<ProductModel> searchedList = specificProducts
+            .where(
+              (item) =>
+                  item.name.toLowerCase().contains(event.query.toLowerCase()),
+            )
+            .toList();
+        emit(FirestoreUpdateSpecificProductLoaded(searchedList.toList()));
+      } catch (e) {
+        emit(FirestoreError('Failed to load updated specific Products'));
+      }
+    });
+
     on<UpdateProductQuantity>(
       (event, emit) async {
         emit(FirestoreLoading());
@@ -175,6 +192,19 @@ class FirestoreBloc extends Bloc<FirestoreEvent, FirestoreState> {
       },
     );
 
+    on<UpdateProductImage>(
+      (event, emit) async {
+        emit(FirestoreLoading());
+        try {
+          await firestoreService.uploadProductImage(event.file, event.code);
+          final products = await firestoreService.getProducts();
+          emit(FirestoreProductLoaded(products.toList()));
+        } catch (e) {
+          emit(FirestoreError('Failed to upload product image'));
+        }
+      },
+    );
+
     on<GetProductImage>(
       (event, emit) async {
         emit(FirestoreLoading());
@@ -183,6 +213,18 @@ class FirestoreBloc extends Bloc<FirestoreEvent, FirestoreState> {
           emit(FirestoreImageLoaded(image));
         } catch (e) {
           emit(FirestoreError('Failed to get product image'));
+        }
+      },
+    );
+
+    on<GetCount>(
+      (event, emit) async {
+        emit(FirestoreLoading());
+        try {
+          int count = await firestoreService.getCount();
+          emit(FirestoreGetCount(count));
+        } catch (e) {
+          emit(FirestoreError('Error getting count'));
         }
       },
     );

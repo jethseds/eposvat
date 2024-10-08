@@ -20,6 +20,8 @@ class AddProduct extends FirestoreEvent {
 
 class GetProducts extends FirestoreEvent {}
 
+class GetCount extends FirestoreEvent {}
+
 class UpdateProducts extends FirestoreEvent {
   UpdateProducts(this.query);
   final String query;
@@ -35,6 +37,12 @@ class UpdateReceipts extends FirestoreEvent {
 class GetSpecificProducts extends FirestoreEvent {
   GetSpecificProducts(this.type);
   final String type;
+}
+
+class UpdateSpecificProducts extends FirestoreEvent {
+  UpdateSpecificProducts(this.type, this.query);
+  final String type;
+  final String query;
 }
 
 class UpdateProductQuantity extends FirestoreEvent {
@@ -61,6 +69,12 @@ class RemoveProduct extends FirestoreEvent {
 
 class UploadProductImage extends FirestoreEvent {
   UploadProductImage(this.file, this.code);
+  final XFile file;
+  final int code;
+}
+
+class UpdateProductImage extends FirestoreEvent {
+  UpdateProductImage(this.file, this.code);
   final XFile file;
   final int code;
 }
