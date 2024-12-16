@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:posadmin/counter/view/add_product_page.dart';
 import 'package:posadmin/counter/view/edit_product_page.dart';
+import 'package:posadmin/counter/view/expense_tracker.dart';
+import 'package:posadmin/counter/view/expense_tracker_form.dart';
+import 'package:posadmin/counter/view/expense_tracker_form_edit.dart';
 import 'package:posadmin/counter/view/expenses_page.dart';
+import 'package:posadmin/counter/view/financial_report.dart';
 import 'package:posadmin/counter/view/inventory_page.dart';
 import 'package:posadmin/counter/view/login_page.dart';
 import 'package:posadmin/counter/view/pos_page.dart';
@@ -34,6 +38,32 @@ final GoRouter _router = GoRouter(
           path: 'inventory',
           builder: (BuildContext context, GoRouterState state) {
             return InventoryPage();
+          },
+        ),
+        GoRoute(
+          path: 'financialreport',
+          builder: (BuildContext context, GoRouterState state) {
+            return FinancialReport();
+          },
+        ),
+        GoRoute(
+          path: 'expensetracker',
+          builder: (BuildContext context, GoRouterState state) {
+            return ExpenseTrackerPage();
+          },
+        ),
+        GoRoute(
+          path: 'expensetrackerform',
+          builder: (BuildContext context, GoRouterState state) {
+            return ExpenseTrackerForm();
+          },
+        ),
+        GoRoute(
+          path: 'expensetrackerformedit/:docID',
+          builder: (BuildContext context, GoRouterState state) {
+            return ExpenseTrackerFormEdit(
+              docID: state.pathParameters['docID']!,
+            );
           },
         ),
         GoRoute(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -108,6 +109,20 @@ class _InventoryViewState extends State<InventoryView> {
                   onTap: (index, sideMenuController) {
                     sideMenuController.changePage(index);
                     context.go('/inventory');
+                  },
+                ),
+                SideMenuItem(
+                  icon: Icon(Icons.report),
+                  onTap: (index, sideMenuController) {
+                    sideMenuController.changePage(index);
+                    context.go('/financialreport');
+                  },
+                ),
+                SideMenuItem(
+                  icon: Icon(Icons.list),
+                  onTap: (index, sideMenuController) {
+                    sideMenuController.changePage(index);
+                    context.go('/expensetracker');
                   },
                 ),
                 SideMenuItem(
@@ -230,7 +245,7 @@ class _InventoryViewState extends State<InventoryView> {
                                       context.go('/add');
                                     },
                                     icon: Icon(Icons.add),
-                                    label: Text(
+                                    label: const Text(
                                       'Add New Product',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w900,
@@ -294,199 +309,197 @@ class _InventoryViewState extends State<InventoryView> {
                                 ],
                               ),
                             ),
-                            products.isNotEmpty
-                                ? Container(
-                                    height: MediaQuery.of(context).size.height <
-                                            820
-                                        ? MediaQuery.of(context).size.height *
-                                            0.70
-                                        : MediaQuery.of(context).size.height *
-                                            0.74,
-                                    width:
-                                        MediaQuery.of(context).size.width - 65,
-                                    child: ListView.builder(
-                                      itemCount: state.product.length,
-                                      scrollDirection: Axis.vertical,
-                                      itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Container(
-                                            height: 80,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(
-                                                  width: (MediaQuery.of(context)
-                                                              .size
-                                                              .width -
-                                                          500) /
-                                                      8,
-                                                  child: IconButton(
-                                                      onPressed: () {
-                                                        context.go(
-                                                            '/edit/${products[index].productCode}');
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.edit,
-                                                        color: Color.fromRGBO(
-                                                            57, 181, 74, 1),
-                                                      )),
-                                                ),
-                                                Container(
-                                                  width: (MediaQuery.of(context)
-                                                              .size
-                                                              .width -
-                                                          100) /
-                                                      8,
-                                                  child: Text(
-                                                    products[index].name,
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            92, 111, 136, 1),
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: (MediaQuery.of(context)
-                                                              .size
-                                                              .width -
-                                                          100) /
-                                                      8,
-                                                  child: Text(
-                                                    products[index]
-                                                        .productCode
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            92, 111, 136, 1),
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: (MediaQuery.of(context)
-                                                              .size
-                                                              .width -
-                                                          100) /
-                                                      8,
-                                                  child: Text(
-                                                    products[index].type,
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            92, 111, 136, 1),
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: (MediaQuery.of(context)
-                                                              .size
-                                                              .width -
-                                                          100) /
-                                                      8,
-                                                  child: Text(
-                                                    '₱ ${products[index].price}',
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            92, 111, 136, 1),
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: (MediaQuery.of(context)
-                                                              .size
-                                                              .width -
-                                                          100) /
-                                                      8,
-                                                  child: Text(
-                                                    products[index]
-                                                        .quantity
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            92, 111, 136, 1),
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    final ImagePicker pocker =
-                                                        ImagePicker();
-
-                                                    final XFile? image =
-                                                        await pocker.pickImage(
-                                                            source: ImageSource
-                                                                .gallery);
-
-                                                    if (image != null) {
-                                                      BlocProvider.of<
-                                                                  FirestoreBloc>(
-                                                              context)
-                                                          .add(UpdateProductImage(
-                                                              image,
-                                                              int.parse(products[
-                                                                      index]
-                                                                  .productCode
-                                                                  .toString())));
-                                                    }
+                            if (products.isNotEmpty)
+                              Container(
+                                height: MediaQuery.of(context).size.height < 820
+                                    ? MediaQuery.of(context).size.height * 0.70
+                                    : MediaQuery.of(context).size.height * 0.74,
+                                width: MediaQuery.of(context).size.width - 65,
+                                child: ListView.builder(
+                                  itemCount: state.product.length,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Container(
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: products[index].quantity <= 0
+                                              ? Colors.red.shade200
+                                              : (products[index].quantity < 20
+                                                  ? Colors.yellow
+                                                  : Colors.white),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      500) /
+                                                  8,
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    context.go(
+                                                        '/edit/${products[index].productCode}');
                                                   },
-                                                  child: Container(
-                                                    width: 80,
-                                                    child: state.product[index]
-                                                            .image!.isNotEmpty
-                                                        ? Image.network(
-                                                            state.product[index]
-                                                                .image!,
-                                                            fit: BoxFit.cover,
-                                                          )
-                                                        : Placeholder(),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: (MediaQuery.of(context)
-                                                              .size
-                                                              .width -
-                                                          500) /
-                                                      8,
-                                                  child: IconButton(
-                                                      onPressed: () {
-                                                        BlocProvider.of<
-                                                                    FirestoreBloc>(
-                                                                context)
-                                                            .add(RemoveProduct(
-                                                                products[index]
-                                                                    .productCode));
-                                                        context
-                                                            .go('/inventory');
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.delete,
-                                                        color: Colors.red,
-                                                      )),
-                                                ),
-                                              ],
+                                                  icon: Icon(
+                                                    Icons.edit,
+                                                    color: Color.fromRGBO(
+                                                        57, 181, 74, 1),
+                                                  )),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                : Center(
-                                    child: Text('No Products'),
-                                  )
+                                            Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      100) /
+                                                  8,
+                                              child: Text(
+                                                products[index].name,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        92, 111, 136, 1),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      100) /
+                                                  8,
+                                              child: Text(
+                                                products[index]
+                                                    .productCode
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        92, 111, 136, 1),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      100) /
+                                                  8,
+                                              child: Text(
+                                                products[index].type,
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        92, 111, 136, 1),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      100) /
+                                                  8,
+                                              child: Text(
+                                                '₱ ${products[index].price}',
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        92, 111, 136, 1),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      100) /
+                                                  8,
+                                              child: Text(
+                                                products[index]
+                                                    .quantity
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        92, 111, 136, 1),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final ImagePicker pocker =
+                                                    ImagePicker();
+
+                                                final XFile? image =
+                                                    await pocker.pickImage(
+                                                        source: ImageSource
+                                                            .gallery);
+
+                                                if (image != null) {
+                                                  BlocProvider.of<
+                                                              FirestoreBloc>(
+                                                          context)
+                                                      .add(UpdateProductImage(
+                                                          image,
+                                                          int.parse(products[
+                                                                  index]
+                                                              .productCode
+                                                              .toString())));
+                                                }
+                                              },
+                                              child: Container(
+                                                width: 80,
+                                                child: state.product[index]
+                                                        .image!.isNotEmpty
+                                                    ? Image.network(
+                                                        state.product[index]
+                                                            .image!,
+                                                        fit: BoxFit.cover,
+                                                      )
+                                                    : Placeholder(),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      500) /
+                                                  8,
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    BlocProvider.of<
+                                                                FirestoreBloc>(
+                                                            context)
+                                                        .add(RemoveProduct(
+                                                            products[index]
+                                                                .productCode));
+                                                    context.go('/inventory');
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                            else
+                              Center(
+                                child: Text('No Products'),
+                              )
                           ],
                         ),
                       ),

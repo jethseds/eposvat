@@ -275,13 +275,13 @@ class _AddProductViewState extends State<AddProductView> {
                       icon: Icon(Icons.image),
                       onPressed: () async {
                         final ImagePicker pocker = ImagePicker();
-      
+
                         final XFile? image =
                             await pocker.pickImage(source: ImageSource.gallery);
                         if (image != null) {
                           BlocProvider.of<FirestoreBloc>(context).add(
-                              UploadProductImage(
-                                  image, int.parse(codeController.text.trim())));
+                              UploadProductImage(image,
+                                  int.parse(codeController.text.trim())));
                         }
                       },
                     ),

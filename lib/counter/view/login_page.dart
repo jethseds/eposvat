@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:posadmin/counter/Auth/auth_bloc.dart';
 import 'package:posadmin/counter/cubit/login_cubit.dart';
+import 'package:posadmin/counter/view/expenses_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -112,6 +113,25 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                     height: 60,
                   ),
+                  // BlocListener<AuthBloc, AuthState>(
+                  //   listener: (context, state) {
+                  //     if (state is AuthLoginSuccess) {
+                  //       final snack = SnackBar(
+                  //         content: Text(state.Message),
+                  //       );
+                  //       ScaffoldMessenger.of(context).showSnackBar(snack);
+                  //       emailController.text = '';
+                  //       passwordController.text = '';
+                  //       context.go('/pos');
+                  //     } else if (state is AuthFailedState) {
+                  //       final snack = SnackBar(
+                  //         content: Text(state.Message),
+                  //       );
+                  //       ScaffoldMessenger.of(context).showSnackBar(snack);
+                  //     }
+                  //   },
+                  //   child: SizedBox(),
+                  // ),
                   BlocListener<AuthBloc, AuthState>(
                     listener: (context, state) {
                       if (state is AuthLoginSuccess) {

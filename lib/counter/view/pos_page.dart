@@ -114,6 +114,20 @@ class _PosViewState extends State<PosView> {
                   },
                 ),
                 SideMenuItem(
+                  icon: Icon(Icons.report),
+                  onTap: (index, sideMenuController) {
+                    sideMenuController.changePage(index);
+                    context.go('/financialreport');
+                  },
+                ),
+                SideMenuItem(
+                  icon: Icon(Icons.list),
+                  onTap: (index, sideMenuController) {
+                    sideMenuController.changePage(index);
+                    context.go('/expensetracker');
+                  },
+                ),
+                SideMenuItem(
                   icon: Icon(Icons.exit_to_app),
                   onTap: (index, sideMenuController) {
                     BlocProvider.of<AuthBloc>(context).add(SignOutUser());
